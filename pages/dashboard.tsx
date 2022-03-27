@@ -1,6 +1,6 @@
 import type { GetServerSideProps, NextPage } from 'next'
 import nookies from 'nookies'
-import { useRouter } from 'next/router'
+import { Router, useRouter } from 'next/router'
 import { logout } from '../utils'
 import { firebaseAdmin } from '../firebaseAdmin'
 
@@ -33,27 +33,38 @@ const DashboardPage: NextPage<Props> = ({ email }) => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const cookies = nookies.get(ctx)
-  const session = cookies.session || ''
-  const user = await firebaseAdmin
-    .auth()
-    .verifySessionCookie(session, true)
-    .catch(() => null)
-  if (!user) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
+DashboardPage.getInitialProps = async ({ req, res }) => {
+  const isServerSide = typeof window === 'undefined'
+
+  // バックエンドのみで動かす
+  if (isServerSide && req && res) {
+    const root = 'http://localhost:2050'
+    const options = { headers: { cookie: req.headers.cookie || '' } }
+
+    const result = await fetch(`${root}/api/me`, options)
+    const json = (await result.json()) as { user?: { email: string } }
+
+    // 認証情報が無ければログイン画面へリダイレクトさせる
+    if (!json.user) {
+      res.writeHead(302, { Location: '/login' })
+      res.end()
     }
+
+    return { email: (json.user || {}).email || '' }
   }
 
-  return {
-    props: {
-      email: user.email,
-    },
+  // フロントエンドのみで動かす
+  if (!isServerSide) {
+    const result = await fetch('/api/me') // 認証情報を取得する
+    const json = (await result.json()) as { user?: { email: string } }
+
+    // 認証情報が無ければログイン画面へリダイレクトさせる
+    if (!json.user) Router.push('/login')
+
+    return { email: (json.user || {}).email || '' }
   }
+
+  return { email: '' }
 }
 
 export default DashboardPage
