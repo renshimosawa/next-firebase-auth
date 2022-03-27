@@ -8,6 +8,22 @@ export type Props = {
   email: string
 }
 
+const DashboardPage: NextPage<Props> = ({ email }) => {
+  const router = useRouter()
+  const onLogout = async () => {
+    await logout()
+    router.push('/login')
+  }
+
+  return (
+    <div>
+      <h1>ダッシュボード</h1>
+      <h2>email: {email}</h2>
+      <button onClick={onLogout}>Logout</button>
+    </div>
+  )
+}
+
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const cookies = nookies.get(ctx)
   const session = cookies.session || ''
@@ -29,21 +45,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       email: user.email,
     },
   }
-}
-const DashboardPage: NextPage<Props> = ({ email }) => {
-  const router = useRouter()
-  const onLogout = async () => {
-    await logout()
-    router.push('/login')
-  }
-
-  return (
-    <div>
-      <h1>ダッシュボード</h1>
-      <h2>email: {email}</h2>
-      <button onClick={onLogout}>Logout</button>
-    </div>
-  )
 }
 
 export default DashboardPage

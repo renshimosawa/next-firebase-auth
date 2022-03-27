@@ -1,9 +1,9 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-import Login from './login'
+import styles from '../styles/Home.module.scss'
+import { useRouter } from 'next/router'
 
 export default function Home() {
+  const router = useRouter()
   return (
     <div className={styles.container}>
       <Head>
@@ -13,7 +13,13 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <Login />
+        <h2 className="text-6xl mb-20">Welcome!</h2>
+        <button className="btn mb-10" onClick={() => router.push('/login')}>
+          Login
+        </button>
+        <button className="btn btn-outline" onClick={() => router.push('/dashboard')}>
+          Dashboard
+        </button>
       </main>
     </div>
   )
