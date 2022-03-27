@@ -12,12 +12,12 @@ const LoginPage: NextPage = () => {
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault()
     await login(email, password)
-    router.push('./dashboard')
+    router.push('/dashboard')
   }
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-        <div className="card-body" onSubmit={onSubmit}>
+        <form className="card-body" onSubmit={onSubmit}>
           <div className="form-control">
             <label className="label">
               <span className="label-text">Email</span>
@@ -49,7 +49,7 @@ const LoginPage: NextPage = () => {
               Login
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   )
