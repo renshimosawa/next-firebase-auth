@@ -16,10 +16,16 @@ const DashboardPage: NextPage<Props> = ({ email }) => {
   }
 
   return (
-    <div>
-      <h1>ダッシュボード</h1>
-      <h2>email: {email}</h2>
-      <button onClick={onLogout}>Logout</button>
+    <div className="flex justify-center items-center h-screen">
+      <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100 text-center">
+        <div className="card-body">
+          <h1 className="text-2xl font-bold">ダッシュボード</h1>
+          <h2 className="m-5">email: {email}</h2>
+          <button className="btn btn-primary" onClick={onLogout}>
+            Logout
+          </button>
+        </div>
+      </div>
     </div>
   )
 }
