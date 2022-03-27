@@ -24,6 +24,9 @@ const DashboardPage: NextPage<Props> = ({ email }) => {
           <button className="btn btn-primary" onClick={onLogout}>
             Logout
           </button>
+          <button className="btn btn-link" onClick={() => router.push('/')}>
+            Back to Home
+          </button>
         </div>
       </div>
     </div>
