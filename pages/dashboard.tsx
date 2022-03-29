@@ -1,6 +1,6 @@
 import type { GetServerSideProps, NextPage } from 'next'
 import nookies from 'nookies'
-import { Router, useRouter } from 'next/router'
+import router, { Router, useRouter } from 'next/router'
 import { logout } from '../utils'
 import { firebaseAdmin } from '../firebaseAdmin'
 
@@ -59,7 +59,7 @@ DashboardPage.getInitialProps = async ({ req, res }) => {
     const json = (await result.json()) as { user?: { email: string } }
 
     // 認証情報が無ければログイン画面へリダイレクトさせる
-    if (!json.user) Router.push('/login')
+    if (!json.user) router.push('/login')
 
     return { email: (json.user || {}).email || '' }
   }

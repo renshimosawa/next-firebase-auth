@@ -3,11 +3,14 @@ import { NextPage } from 'next'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { login } from '../utils'
+import { LoginButton, LogoutButton } from '../components/Button'
+import { useAuthContext } from '../framework/context/AuthContext'
 
 const LoginPage: NextPage = () => {
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const { currentUser } = useAuthContext()
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault()
@@ -51,6 +54,7 @@ const LoginPage: NextPage = () => {
           </div>
         </form>
       </div>
+      {currentUser ? <LogoutButton /> : <LoginButton />}
     </div>
   )
 }
